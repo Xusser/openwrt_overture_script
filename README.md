@@ -4,10 +4,10 @@
 
 ## Usage
 
-**Upstream server configs in */root/overture/DNSCheck.sh* and */etc/init.d/overture* should be set correctly**
+**位于 */root/overture/DNSCheck* 和 */etc/init.d/overture* 的参数应正确设置**
 
 ```bash
-chmod +x /root/overture/DNSCheck.sh
+chmod +x /root/overture/DNSCheck
 chmod +x /root/overture/overture-linux-arm
 chmod +x /etc/init.d/overture
 /etc/init.d/overture enable

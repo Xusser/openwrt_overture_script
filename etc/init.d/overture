@@ -1,8 +1,10 @@
 #!/bin/sh /etc/rc.common
 
 #service startup sequence
-START=90
-STOP=15
+#start after shadowsocks
+START=95
+#stop before shadowsocks
+STOP=10
 
 NAME=overture
 
@@ -10,16 +12,17 @@ start() {
     pidof overture-linux-arm >/dev/null && return 0
     (/root/overture/overture-linux-arm -c /root/overture/config.json >/dev/null 2>&1 )&
     (/usr/bin/ss-local -s 1.2.3.4 -p 8388 -l 5300 -b 127.0.0.1 -k Example -m chacha20-ietf-poly1305 -t 120 --no-delay >/dev/null 2>&1 )&
-    touch /var/run/DNSRunning
-    (/root/overture/DNSCheck.sh >/dev/null 2>&1 )&
+    touch /var/run/Overture
+    (/root/overture/DNSCheck >/dev/null 2>&1 )&
 }
 
 kill_all() {
     kill -9 $(pidof $@) >/dev/null 2>&1
+    kill -9 $(pgrep -f "DNSCheck") >/dev/null 2>&1
     kill -9 $(pgrep -f "\-l 5300") >/dev/null 2>&1
 }
 
 stop() {
     kill_all overture-linux-arm
-    rm /var/run/DNSRunning
+    rm /var/run/Overture
 }
