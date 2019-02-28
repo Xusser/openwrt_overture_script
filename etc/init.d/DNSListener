@@ -2,18 +2,17 @@
 
 #service startup sequence
 #start after shadowsocks
-START=95
+START=94
 #stop before shadowsocks
-STOP=10
+STOP=11
 
 USE_PROCD=1
 
 start_service() {
 	procd_open_instance
-	procd_set_param command /root/overture/overture-linux-arm
-	procd_append_param command -c /root/overture/config.json #append command parameters
-	
-	procd_set_param file /root/overture/config.json #reload while config changed
+	procd_set_param command /usr/bin/ss-local
+	procd_append_param command -s 1.2.3.4 -p 5678 -l 5300 -b 127.0.0.1 -k Example -m rc4-md5 -t 60
+
 	procd_set_param respawn
 	procd_set_param stdout 1
 	procd_set_param stderr 1
